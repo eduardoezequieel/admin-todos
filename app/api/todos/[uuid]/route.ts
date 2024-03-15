@@ -49,3 +49,20 @@ export const PUT = async (request: Request, { params }: Args) => {
     return NextResponse.json({ error }, { status: 400 });
   }
 };
+
+export const DELETE = async (request: Request, { params }: Args) => {
+  try {
+    const { uuid } = params;
+
+    const todo = await prisma.todo.delete({
+      where: { id: uuid },
+    });
+
+    if (!todo) return NextResponse.json({ error: 'Todo not found' }, { status: 404 });
+
+    return NextResponse.json({ todo });
+  } catch (error) {
+    console.log(error);
+    return NextResponse.json({ error }, { status: 400 });
+  }
+};
