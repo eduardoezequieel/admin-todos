@@ -44,7 +44,6 @@ export const DELETE = async (request: Request) => {
 
     return NextResponse.json({ todo });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error }, { status: 400 });
   }
 };

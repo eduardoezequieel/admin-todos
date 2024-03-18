@@ -11,8 +11,6 @@ interface Args {
 export const GET = async (request: Request, { params }: Args) => {
   const { uuid } = params;
 
-  console.log(uuid);
-
   const todo = await prisma.todo.findFirst({
     where: {
       id: uuid,
@@ -33,7 +31,6 @@ export const PUT = async (request: Request, { params }: Args) => {
   try {
     const { uuid } = params;
 
-    console.log(params);
     const { description, complete } = await putSchema.validate(await request.json());
 
     const todo = await prisma.todo.update({
@@ -45,7 +42,6 @@ export const PUT = async (request: Request, { params }: Args) => {
 
     return NextResponse.json({ todo });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error }, { status: 400 });
   }
 };
@@ -62,7 +58,6 @@ export const DELETE = async (request: Request, { params }: Args) => {
 
     return NextResponse.json({ todo });
   } catch (error) {
-    console.log(error);
     return NextResponse.json({ error }, { status: 400 });
   }
 };
