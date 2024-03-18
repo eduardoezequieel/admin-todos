@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { FormEvent, useState } from 'react';
 import { IoTrashOutline } from 'react-icons/io5';
-import { createTodo, deleteCompleted } from '../helpers';
+import { createTodo, deleteCompleted } from '../../server-todos/actions';
 
 export const NewTodo = () => {
   const [description, setDescription] = useState('');
@@ -13,18 +13,10 @@ export const NewTodo = () => {
     e.preventDefault();
     if (description.trim().length === 0) return;
 
-    const newTodo = await createTodo(description);
-
-    if (newTodo) {
-      router.refresh();
-      setDescription('');
-    }
+    await createTodo(description);
+    setDescription('');
   };
 
-  const handleDelete = async () => {
-    await deleteCompleted();
-    router.refresh();
-  };
   return (
     <form className="flex w-full" onSubmit={onSubmit}>
       <input
@@ -45,7 +37,7 @@ export const NewTodo = () => {
       <span className="flex flex-1"></span>
 
       <button
-        onClick={() => handleDelete()}
+        onClick={async () => await deleteCompleted()}
         type="button"
         className="ml-2 flex items-center justify-center rounded bg-red-400 p-2 text-white transition-all hover:bg-red-700"
       >
